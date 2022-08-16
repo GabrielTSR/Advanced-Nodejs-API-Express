@@ -1,7 +1,19 @@
 {
-  "name": "advanced-node",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "GabrielTSR <gabrielalvesrocha22@gmail.com>",
-  "license": "MIT"
+    "name": "advanced-node",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "GabrielTSR <gabrielalvesrocha22@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "build": "rimraf dist && tsc"
+    },
+    "devDependencies": {
+        "typescript": "^4.7.4"
+    },
+    "engines": {
+        "node": "16.x"
+    },
+    "dependencies": {
+        "rimraf": "^3.0.2"
+    }
 }
