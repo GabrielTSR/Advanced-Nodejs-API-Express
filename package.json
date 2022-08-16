@@ -5,8 +5,10 @@
     "author": "GabrielTSR <gabrielalvesrocha22@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "build": "rimraf dist && tsc",
-        "start": "node dist/main/api"
+        "build": "rimraf dist && tsc -p tsconfig-build.json",
+        "start": "node dist/main/api",
+        "lint": "eslint .",
+        "lint:fix": "npm run lint -- --fix"
     },
     "devDependencies": {
         "@types/module-alias": "^2.0.1",
