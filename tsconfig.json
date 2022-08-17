@@ -1,21 +1,25 @@
 {
     "compilerOptions": {
+        "incremental": true,
+        "outDir": "dist",
+        "rootDirs": ["src", "tests"],
         "target": "es2021",
+        "sourceMap": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
         "module": "commonjs",
-        "rootDir": "src",
         "moduleResolution": "node",
+        "esModuleInterop": true,
         "baseUrl": "src",
         "paths": {
             "@/*": ["*"],
             "@/tests/*": ["../tests/*"]
         },
-        "sourceMap": true,
-        "outDir": "dist",
-        "esModuleInterop": true /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */,
-        "forceConsistentCasingInFileNames": true,
         "strict": true,
-        "noImplicitAny": true,
-        "skipLibCheck": true
+        "noImplicitOverride": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true
     },
     "include": ["src", "tests"]
 }
