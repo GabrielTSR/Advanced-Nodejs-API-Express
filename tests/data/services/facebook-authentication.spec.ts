@@ -88,4 +88,10 @@ describe('FacebookAuthenticationService', () => {
         });
         expect(userAccountRepo.saveWithFacebook).toHaveBeenCalledTimes(1);
     });
+
+    it('should call token generator with correct params', async () => {
+        await sut.perform({ token });
+
+        // expect(userAccountRepo.saveWithFacebook).toHaveBeenCalledWith({
+    });
 });
