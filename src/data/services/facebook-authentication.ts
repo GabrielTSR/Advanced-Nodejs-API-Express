@@ -19,10 +19,10 @@ export class FacebookAuthenticationService {
         const fbData = await this.facebookApi.loadUser(params);
         if (fbData) {
             const accountData = await this.userAccountRepo.load({ email: fbData?.email });
-            if (accountData?.name) {
+            if (accountData) {
                 await this.userAccountRepo.updateWithFacebook({
                     id: accountData.id,
-                    name: fbData.name,
+                    name: accountData.name ?? fbData.name,
                     facebokId: fbData.facebokId,
                 });
             } else {
