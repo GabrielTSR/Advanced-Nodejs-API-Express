@@ -23,6 +23,6 @@ export namespace SaveFacebookAccountRepository {
         id?: string;
         email: string;
         name: string;
-        facebokId: string;
+        facebookId: string;
     };
 }

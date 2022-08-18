@@ -15,7 +15,7 @@ describe('FacebookAuthenticationService', () => {
         facebookApi.loadUser.mockResolvedValue({
             name: 'any_fb_name',
             email: 'any_fb_email',
-            facebokId: 'any_fb_id',
+            facebookId: 'any_fb_id',
         });
         userAccountRepo = mock();
         sut = new FacebookAuthenticationService(facebookApi, userAccountRepo);
@@ -51,7 +51,7 @@ describe('FacebookAuthenticationService', () => {
         expect(userAccountRepo.saveWithFacebook).toHaveBeenCalledWith({
             email: 'any_fb_email',
             name: 'any_fb_name',
-            facebokId: 'any_fb_id',
+            facebookId: 'any_fb_id',
         });
         expect(userAccountRepo.saveWithFacebook).toHaveBeenCalledTimes(1);
     });
@@ -68,7 +68,7 @@ describe('FacebookAuthenticationService', () => {
             id: 'any_id',
             name: 'any_fb_name',
             email: 'any_fb_email',
-            facebokId: 'any_fb_id',
+            facebookId: 'any_fb_id',
         });
         expect(userAccountRepo.saveWithFacebook).toHaveBeenCalledTimes(1);
     });
@@ -84,7 +84,7 @@ describe('FacebookAuthenticationService', () => {
             id: 'any_id',
             name: 'any_fb_name',
             email: 'any_fb_email',
-            facebokId: 'any_fb_id',
+            facebookId: 'any_fb_id',
         });
         expect(userAccountRepo.saveWithFacebook).toHaveBeenCalledTimes(1);
     });
