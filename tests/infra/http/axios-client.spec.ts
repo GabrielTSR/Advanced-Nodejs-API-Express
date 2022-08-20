@@ -5,7 +5,9 @@ import { HttpGetClient } from '@/infra/http';
 jest.mock('axios');
 
 class AxiosHttpClient {
-    async get(params: HttpGetClient.Params): Promise<void> {}
+    async get(args: HttpGetClient.Params): Promise<void> {
+        await axios.get(args.url, { params: args.params });
+    }
 }
 
 describe('AxiosHttpClient', () => {
@@ -26,6 +28,7 @@ describe('AxiosHttpClient', () => {
                     any: 'any',
                 },
             });
+            expect(fakeAxios.get).toHaveBeenCalledTimes(1);
         });
     });
 });
