@@ -1,10 +1,10 @@
+import { mock, MockProxy } from 'jest-mock-extended'
 import { AccessToken } from '@/domain/models'
 import { LoadFacebookUserApi } from '@/data/contracts/apis/facebook'
 import { TokenGenerator } from '@/data/contracts/crypto'
 import { LoadUserAccountRepository, SaveFacebookAccountRepository } from '@/data/contracts/repos'
 import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthenticationService } from '@/data/services'
-import { mock, MockProxy } from 'jest-mock-extended'
 
 describe('FacebookAuthenticationService', () => {
     let facebookApi: MockProxy<LoadFacebookUserApi>
