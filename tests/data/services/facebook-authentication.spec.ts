@@ -2,14 +2,19 @@ import { mock, MockProxy } from 'jest-mock-extended'
 import { AccessToken } from '@/domain/models'
 import { LoadFacebookUserApi } from '@/data/contracts/apis/facebook'
 import { TokenGenerator } from '@/data/contracts/crypto'
-import { LoadUserAccountRepository, SaveFacebookAccountRepository } from '@/data/contracts/repos'
+import {
+    LoadUserAccountRepository,
+    SaveFacebookAccountRepository,
+} from '@/data/contracts/repos'
 import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthenticationService } from '@/data/services'
 
 describe('FacebookAuthenticationService', () => {
     let facebookApi: MockProxy<LoadFacebookUserApi>
     let crypto: MockProxy<TokenGenerator>
-    let userAccountRepo: MockProxy<LoadUserAccountRepository & SaveFacebookAccountRepository>
+    let userAccountRepo: MockProxy<
+        LoadUserAccountRepository & SaveFacebookAccountRepository
+    >
     let sut: FacebookAuthenticationService
     let token: string
 
@@ -23,13 +28,19 @@ describe('FacebookAuthenticationService', () => {
         })
         userAccountRepo = mock()
         userAccountRepo.load.mockResolvedValue(undefined)
-        userAccountRepo.saveWithFacebook.mockResolvedValue({ id: 'any_account_id' })
+        userAccountRepo.saveWithFacebook.mockResolvedValue({
+            id: 'any_account_id',
+        })
         crypto = mock()
         crypto.generateToken.mockResolvedValue('any_generated_token')
     })
 
     beforeEach(() => {
-        sut = new FacebookAuthenticationService(facebookApi, userAccountRepo, crypto)
+        sut = new FacebookAuthenticationService(
+            facebookApi,
+            userAccountRepo,
+            crypto
+        )
     })
 
     it('should call loadFacebookUserApi with correct params', async () => {
@@ -50,7 +61,9 @@ describe('FacebookAuthenticationService', () => {
     it('should call LoadUserAccountRepo when LoadFacebookUserApi returns data', async () => {
         await sut.perform({ token })
 
-        expect(userAccountRepo.load).toHaveBeenCalledWith({ email: 'any_fb_email' })
+        expect(userAccountRepo.load).toHaveBeenCalledWith({
+            email: 'any_fb_email',
+        })
         expect(userAccountRepo.load).toHaveBeenCalledTimes(1)
     })
 
@@ -133,7 +146,9 @@ describe('FacebookAuthenticationService', () => {
     })
 
     it('should rethrow if SaveFacebookAccountRepository throws', async () => {
-        userAccountRepo.saveWithFacebook.mockRejectedValueOnce(new Error('save_error'))
+        userAccountRepo.saveWithFacebook.mockRejectedValueOnce(
+            new Error('save_error')
+        )
 
         const promise = sut.perform({ token })
 

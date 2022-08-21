@@ -717,7 +717,7 @@
 
 "@types/jest@^28.1.7":
   version "28.1.7"
-  resolved "https://registry.npmjs.org/@types/jest/-/jest-28.1.7.tgz"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-28.1.7.tgz#a680c5d05b69634c2d54a63cb106d7fb1adaba16"
   integrity sha512-acDN4VHD40V24tgu0iC44jchXavRNVFXQ/E6Z5XNsswgoSO/4NgsXoEYmPUGookKldlZQyIpmrEXsHI9cA3ZTA==
   dependencies:
     expect "^28.0.0"
@@ -3489,7 +3489,7 @@ lodash.isstring@^4.0.1:
 
 lodash.memoize@4.x:
   version "4.1.2"
-  resolved "https://registry.npmjs.org/lodash.memoize/-/lodash.memoize-4.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==
 
 lodash.merge@^4.6.2:
@@ -4787,7 +4787,7 @@ ts-essentials@^7.0.3:
 
 ts-jest@^28.0.8:
   version "28.0.8"
-  resolved "https://registry.npmjs.org/ts-jest/-/ts-jest-28.0.8.tgz"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-28.0.8.tgz#cd204b8e7a2f78da32cf6c95c9a6165c5b99cc73"
   integrity sha512-5FaG0lXmRPzApix8oFG8RKjAz4ehtm8yMKOTy5HX3fY6W8kmvOrmcY0hKDElW52FJov+clhUbrKAqofnj4mXTg==
   dependencies:
     bs-logger "0.x"
