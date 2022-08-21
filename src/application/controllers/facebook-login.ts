@@ -1,5 +1,10 @@
 import { RequiredFieldError } from '@/application/errors/http'
-import { badRequest, ok, serverError, unauthorizared } from '@/application/helpers/http'
+import {
+    badRequest,
+    ok,
+    serverError,
+    unauthorizared,
+} from '@/application/helpers/http'
 import { FacebookAuthentication } from '@/domain/features'
 import { HttpResponse } from '@/application/helpers'
 import { AccessToken } from '@/domain/models'
@@ -15,7 +20,9 @@ type Model =
       }
 
 export class FacebookLoginController {
-    constructor(private readonly facebookAuthentication: FacebookAuthentication) {}
+    constructor(
+        private readonly facebookAuthentication: FacebookAuthentication
+    ) {}
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
         try {
@@ -23,9 +30,13 @@ export class FacebookLoginController {
             if (error) {
                 return badRequest(error)
             }
-            const accessToken = await this.facebookAuthentication.perform({ token: httpRequest.token })
+            const accessToken = await this.facebookAuthentication.perform({
+                token: httpRequest.token,
+            })
             if (accessToken instanceof AccessToken) {
-                return ok({ accessToken: accessToken.value })
+                return ok({
+                    accessToken: accessToken.value,
+                })
             } else {
                 return unauthorizared()
             }
