@@ -1,8 +1,9 @@
+import { UnauthorizaredError, RequiredFieldError } from '@/application/errors/http'
 import { mock, MockProxy } from 'jest-mock-extended'
 import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthentication } from '@/domain/features'
 import { AccessToken } from '@/domain/models'
-import { RequiredFieldError } from '@/application/errors/http'
+
 import { FacebookLoginController } from '@/application/controllers'
 import { ServerError } from '@/application/errors'
 
@@ -48,7 +49,7 @@ describe('FacebookLoginController', () => {
         facebookAuth.perform.mockResolvedValueOnce(new AuthenticationError())
         const httpResponse = await sut.handle({ token: 'any_token' })
 
-        expect(httpResponse).toEqual({ statusCode: 401, data: new AuthenticationError() })
+        expect(httpResponse).toEqual({ statusCode: 401, data: new UnauthorizaredError() })
     })
 
     it('should return 200 if token is authentication succeeds', async () => {
