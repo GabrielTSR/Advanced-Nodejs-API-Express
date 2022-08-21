@@ -1,14 +1,9 @@
-import { ValidationBuilder } from './../validation/builder'
-import { ValidationComposite } from './../validation/composite'
-import {
-    badRequest,
-    ok,
-    serverError,
-    unauthorizared,
-} from '@/application/helpers/http'
+import { ValidationBuilder, Validator } from '@/application/validation'
+import { ok, unauthorizared } from '@/application/helpers/http'
 import { FacebookAuthentication } from '@/domain/features'
 import { HttpResponse } from '@/application/helpers'
 import { AccessToken } from '@/domain/models'
+import { Controller } from '@/application/controllers'
 
 type HttpRequest = {
     token: string
@@ -20,41 +15,32 @@ type Model =
           accessToken: string
       }
 
-export class FacebookLoginController {
+export class FacebookLoginController extends Controller {
     constructor(
         private readonly facebookAuthentication: FacebookAuthentication
-    ) {}
-
-    async handle(httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
-        try {
-            const error = this.validate(httpRequest)
-            if (error) {
-                return badRequest(error)
-            }
-            const accessToken = await this.facebookAuthentication.perform({
-                token: httpRequest.token,
-            })
-            if (accessToken instanceof AccessToken) {
-                return ok({
-                    accessToken: accessToken.value,
-                })
-            } else {
-                return unauthorizared()
-            }
-        } catch (e) {
-            const error = e instanceof Error ? e : new Error('infra_error')
-            return serverError(error)
-        }
+    ) {
+        super()
     }
 
-    private validate(httpRequest: HttpRequest): Error | undefined {
-        return new ValidationComposite([
+    async perform(httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
+        const accessToken = await this.facebookAuthentication.perform({
+            token: httpRequest.token,
+        })
+        return accessToken instanceof AccessToken
+            ? ok({
+                  accessToken: accessToken.value,
+              })
+            : unauthorizared()
+    }
+
+    override buildValidators(httpRequest: HttpRequest): Validator[] {
+        return [
             ...ValidationBuilder.of({
                 value: httpRequest.token,
                 fieldName: 'token',
             })
                 .required()
                 .build(),
-        ]).validate()
+        ]
     }
 }
