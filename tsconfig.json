@@ -19,8 +19,7 @@
         "noImplicitOverride": true,
         "removeComments": true,
         "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "noImplicitReturns": true
+        "experimentalDecorators": true
     },
     "include": ["src", "tests"]
 }
