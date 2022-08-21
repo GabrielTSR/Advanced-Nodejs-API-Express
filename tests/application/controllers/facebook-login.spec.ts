@@ -6,22 +6,30 @@ class FacebookLoginController {
     constructor(private readonly facebookAuthentication: FacebookAuthentication) {}
 
     async handle(httpRequest: any): Promise<HttpResponse> {
-        if (httpRequest?.token === '' || !httpRequest?.token) {
-            return {
-                statusCode: 400,
-                data: new Error('Missing token'),
+        try {
+            if (httpRequest?.token === '' || !httpRequest?.token) {
+                return {
+                    statusCode: 400,
+                    data: new Error('Missing token'),
+                }
             }
-        }
-        const result = await this.facebookAuthentication.perform({ token: httpRequest.token })
-        if (result instanceof AuthenticationError) {
-            return {
-                statusCode: 401,
-                data: result,
+            const result = await this.facebookAuthentication.perform({ token: httpRequest.token })
+            if (result instanceof AuthenticationError) {
+                return {
+                    statusCode: 401,
+                    data: result,
+                }
+            } else {
+                return {
+                    statusCode: 200,
+                    data: { accessToken: result.value },
+                }
             }
-        } else {
+        } catch (e) {
+            const error = e instanceof Error ? e : new Error('infra_error')
             return {
-                statusCode: 200,
-                data: { accessToken: result.value },
+                statusCode: 500,
+                data: new ServerError(error),
             }
         }
     }
@@ -30,6 +38,14 @@ class FacebookLoginController {
 type HttpResponse = {
     statusCode: number
     data: any
+}
+
+class ServerError extends Error {
+    constructor(error?: Error) {
+        super('Server failed. Try again later.')
+        this.name = 'ServerError'
+        this.stack = error?.stack
+    }
 }
 
 describe('FacebookLoginController', () => {
@@ -85,6 +101,17 @@ describe('FacebookLoginController', () => {
             data: {
                 accessToken: new AccessToken('any_value').value,
             },
+        })
+    })
+
+    it('should return 500 if authentication throws', async () => {
+        const error = new Error('infra_error')
+        facebookAuth.perform.mockRejectedValueOnce(error)
+        const httpResponse = await sut.handle({ token: 'any_token' })
+
+        expect(httpResponse).toEqual({
+            statusCode: 500,
+            data: new ServerError(error),
         })
     })
 })
