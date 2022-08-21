@@ -17,15 +17,15 @@ describe('FacebookApi', () => {
     beforeEach(() => {
         httpClient.get
             .mockResolvedValueOnce({
-                data: {
-                    access_token: 'any_app_token',
-                },
+                access_token: 'any_app_token',
             })
             .mockResolvedValueOnce({
                 data: { user_id: 'any_user_id' },
             })
             .mockResolvedValueOnce({
-                data: { id: 'any_fb_id', name: 'any_fb_name', email: 'any_fb_email' },
+                id: 'any_fb_id',
+                name: 'any_fb_name',
+                email: 'any_fb_email',
             })
         sut = new FacebookApi(httpClient, clientId, clientSecret)
     })
