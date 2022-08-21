@@ -1,8 +1,7 @@
 import { RequiredFieldError } from '@/application/errors/http'
-import { badRequest, unauthorizared } from '@/application/helpers/http'
+import { badRequest, serverError, unauthorizared } from '@/application/helpers/http'
 import { FacebookAuthentication } from '@/domain/features'
 import { HttpResponse } from '@/application/helpers'
-import { ServerError } from '@/application/errors'
 import { AuthenticationError } from '@/domain/errors'
 
 export class FacebookLoginController {
@@ -24,10 +23,7 @@ export class FacebookLoginController {
             }
         } catch (e) {
             const error = e instanceof Error ? e : new Error('infra_error')
-            return {
-                statusCode: 500,
-                data: new ServerError(error),
-            }
+            return serverError(error)
         }
     }
 }
