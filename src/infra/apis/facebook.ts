@@ -18,7 +18,8 @@ export class FacebookApi implements LoadFacebookUserApi {
         token,
     }: LoadFacebookUserApi.Params): Promise<LoadFacebookUserApi.Result> {
         return this.getUserInfo(token)
-            .then(({ id, name, email }) => {
+            .then((res) => {
+                const { id, name, email } = res
                 return { facebookId: id, name, email }
             })
             .catch(() => undefined)
