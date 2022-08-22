@@ -17,16 +17,11 @@ export class FacebookApi implements LoadFacebookUserApi {
     async loadUser({
         token,
     }: LoadFacebookUserApi.Params): Promise<LoadFacebookUserApi.Result> {
-        try {
-            return this.getUserInfo(token)
-                .then((res) => {
-                    const { id, name, email } = res
-                    return { facebookId: id, name, email }
-                })
-                .catch(() => undefined)
-        } catch {
-            return undefined
-        }
+        return this.getUserInfo(token)
+            .then(({ id, name, email }) => {
+                return { facebookId: id, name, email }
+            })
+            .catch(() => undefined)
     }
 
     private async getAppToken(): Promise<AppToken> {
