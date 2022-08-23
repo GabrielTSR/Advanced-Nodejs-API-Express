@@ -1,16 +1,9 @@
-// import 'reflect-metadata'
-// import express, { json } from 'express'
-// import cors from 'cors'
-// import './config/module-alias'
+import './config/module-alias'
+import { app } from '@/main/config/app'
+import { env } from '@/main/config/env'
 
-// const app = express()
-// app.use(cors())
-// app.use(json())
-// app.use((req, res, next) => {
+import 'reflect-metadata'
 
-// }))
-
-// const port = 3333
-// app.listen(port, () => {
-//     console.log('Server running at http://localhost:%d', port)
-// })
+app.listen(env.appPort, () => {
+    console.log('Server running at http://localhost:%d', env.appPort)
+})
