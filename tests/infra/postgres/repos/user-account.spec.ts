@@ -1,4 +1,4 @@
-import { IBackup } from 'pg-mem'
+import { IBackup, IMemoryDb } from 'pg-mem'
 import { getRepository, Repository, getConnection } from 'typeorm'
 import { PgUserAccountRepository } from '@/infra/postgres/repos'
 import { PgUser } from '@/infra/postgres/entities'
@@ -8,9 +8,10 @@ describe('PgUserAccountRepository', () => {
     let sut: PgUserAccountRepository
     let pgUserRepo: Repository<PgUser>
     let backup: IBackup
+    let db: IMemoryDb
 
     beforeAll(async () => {
-        const db = await makeFakeDb([PgUser])
+        db = await makeFakeDb([PgUser])
         backup = db.backup()
         pgUserRepo = getRepository(PgUser)
     })
