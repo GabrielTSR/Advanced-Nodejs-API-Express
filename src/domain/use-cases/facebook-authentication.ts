@@ -13,7 +13,7 @@ type Setup = (
     crypto: TokenGenerator
 ) => FacebookAuthentication
 type Params = { token: string }
-type Result = AccessToken | AuthenticationError
+type Result = { accessToken: string }
 export type FacebookAuthentication = (params: Params) => Promise<Result>
 
 export const setupFacebookAuthentication: Setup =
@@ -25,11 +25,11 @@ export const setupFacebookAuthentication: Setup =
             })
             const fbAccount = new FacebookAccount(fbData, accountData)
             const { id } = await userAccountRepo.saveWithFacebook(fbAccount)
-            const token = await crypto.generateToken({
+            const accessToken = await crypto.generateToken({
                 key: id,
                 expirationInMs: AccessToken.expirationInMs,
             })
-            return new AccessToken(token)
+            return { accessToken }
         }
-        return new AuthenticationError()
+        throw new AuthenticationError()
     }
