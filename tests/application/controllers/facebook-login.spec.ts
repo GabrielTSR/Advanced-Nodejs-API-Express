@@ -1,20 +1,18 @@
-import { mock, MockProxy } from 'jest-mock-extended'
 import { UnauthorizaredError } from '@/application/errors/http'
 import { FacebookLoginController } from '@/application/controllers'
 import { RequiredStringValidator } from '@/application/validation'
 import { AuthenticationError } from '@/domain/entities/errors'
-import { FacebookAuthentication } from '@/domain/features'
 import { AccessToken } from '@/domain/entities'
 
 describe('FacebookLoginController', () => {
     let sut: FacebookLoginController
-    let facebookAuth: MockProxy<FacebookAuthentication>
+    let facebookAuth: jest.Mock
     let token: string
 
     beforeAll(() => {
         token = 'any_token'
-        facebookAuth = mock<FacebookAuthentication>()
-        facebookAuth.perform.mockResolvedValue(new AccessToken('any_value'))
+        facebookAuth = jest.fn()
+        facebookAuth.mockResolvedValue(new AccessToken('any_value'))
     })
 
     beforeEach(() => {
@@ -32,14 +30,14 @@ describe('FacebookLoginController', () => {
     it('should call FacebookAuthentication with correct params', async () => {
         await sut.handle({ token })
 
-        expect(facebookAuth.perform).toHaveBeenCalledWith({
+        expect(facebookAuth).toHaveBeenCalledWith({
             token,
         })
-        expect(facebookAuth.perform).toHaveBeenCalledTimes(1)
+        expect(facebookAuth).toHaveBeenCalledTimes(1)
     })
 
     it('should return 401 if token is authentication fails', async () => {
-        facebookAuth.perform.mockResolvedValueOnce(new AuthenticationError())
+        facebookAuth.mockResolvedValueOnce(new AuthenticationError())
         const httpResponse = await sut.handle({ token })
 
         expect(httpResponse).toEqual({

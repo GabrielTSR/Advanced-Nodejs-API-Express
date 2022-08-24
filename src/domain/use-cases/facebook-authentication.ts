@@ -5,30 +5,27 @@ import {
     SaveFacebookAccountRepository,
 } from '@/domain/contracts/repos'
 import { AuthenticationError } from '@/domain/entities/errors'
-import { FacebookAuthentication } from '@/domain/features'
 import { AccessToken, FacebookAccount } from '@/domain/entities'
 
-export class FacebookAuthenticationUseCase implements FacebookAuthentication {
-    constructor(
-        private readonly facebookApi: LoadFacebookUserApi,
-        private readonly userAccountRepo: LoadUserAccountRepository &
-            SaveFacebookAccountRepository,
-        private readonly crypto: TokenGenerator
-    ) {}
+type Setup = (
+    facebookApi: LoadFacebookUserApi,
+    userAccountRepo: LoadUserAccountRepository & SaveFacebookAccountRepository,
+    crypto: TokenGenerator
+) => FacebookAuthentication
+type Params = { token: string }
+type Result = AccessToken | AuthenticationError
+export type FacebookAuthentication = (params: Params) => Promise<Result>
 
-    async perform(
-        params: FacebookAuthentication.Params
-    ): Promise<FacebookAuthentication.Result> {
-        const fbData = await this.facebookApi.loadUser(params)
+export const setupFacebookAuthentication: Setup =
+    (facebookApi, userAccountRepo, crypto) => async (params) => {
+        const fbData = await facebookApi.loadUser(params)
         if (fbData) {
-            const accountData = await this.userAccountRepo.load({
+            const accountData = await userAccountRepo.load({
                 email: fbData?.email,
             })
             const fbAccount = new FacebookAccount(fbData, accountData)
-            const { id } = await this.userAccountRepo.saveWithFacebook(
-                fbAccount
-            )
-            const token = await this.crypto.generateToken({
+            const { id } = await userAccountRepo.saveWithFacebook(fbAccount)
+            const token = await crypto.generateToken({
                 key: id,
                 expirationInMs: AccessToken.expirationInMs,
             })
@@ -36,4 +33,3 @@ export class FacebookAuthenticationUseCase implements FacebookAuthentication {
         }
         return new AuthenticationError()
     }
-}
