@@ -1,7 +1,7 @@
 import { makeJwtTokenGenerator } from '@/main/factories/crypto'
 import { makeFacebookApi } from '@/main/factories/apis'
 import { makePgUserAccountRepo } from '@/main/factories/repos'
-import { FacebookAuthenticationService } from '@/data/services'
+import { FacebookAuthenticationService } from '@/domain/services'
 
 export const makeFacebookAuthenticationService =
     (): FacebookAuthenticationService => {
