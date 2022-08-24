@@ -12,9 +12,9 @@ type Setup = (
     userAccountRepo: LoadUserAccountRepository & SaveFacebookAccountRepository,
     crypto: TokenGenerator
 ) => FacebookAuthentication
-type Params = { token: string }
-type Result = { accessToken: string }
-export type FacebookAuthentication = (params: Params) => Promise<Result>
+type Input = { token: string }
+type Output = { accessToken: string }
+export type FacebookAuthentication = (params: Input) => Promise<Output>
 
 export const setupFacebookAuthentication: Setup =
     (facebookApi, userAccountRepo, crypto) => async (params) => {
