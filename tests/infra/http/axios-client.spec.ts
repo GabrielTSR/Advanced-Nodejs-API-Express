@@ -20,7 +20,7 @@ describe('AxiosHttpClient', () => {
         sut = new AxiosHttpClient()
     })
     describe('get', () => {
-        it('should call get with correct params', async () => {
+        it('should call get with correct input', async () => {
             await sut.get({ url, params })
 
             expect(fakeAxios.get).toHaveBeenCalledWith(url, { params })
@@ -28,9 +28,9 @@ describe('AxiosHttpClient', () => {
         })
 
         it('should return data on success', async () => {
-            const result = await sut.get({ url, params })
+            const output = await sut.get({ url, params })
 
-            expect(result).toEqual('any_data')
+            expect(output).toEqual('any_data')
         })
 
         it('should rethrow if get throws', async () => {

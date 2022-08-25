@@ -5,13 +5,13 @@ import {
 } from '@/domain/contracts/repos'
 import { PgUser } from '@/infra/postgres/entities/user'
 
-type LoadParams = LoadUserAccountRepository.Params
-type LoadResult = LoadUserAccountRepository.Result
-type SaveParams = SaveFacebookAccountRepository.Params
-type SaveResult = SaveFacebookAccountRepository.Result
+type LoadInput = LoadUserAccountRepository.Input
+type LoadOutput = LoadUserAccountRepository.Output
+type SaveInput = SaveFacebookAccountRepository.Input
+type SaveOutput = SaveFacebookAccountRepository.Output
 export class PgUserAccountRepository
     implements LoadUserAccountRepository, SaveFacebookAccountRepository {
-    async load({ email }: LoadParams): Promise<LoadResult> {
+    async load({ email }: LoadInput): Promise<LoadOutput> {
         const pgUserRepo = getRepository(PgUser)
         const pgUser = await pgUserRepo.findOne({ email })
         if (pgUser) {
@@ -28,24 +28,24 @@ export class PgUserAccountRepository
         name,
         email,
         facebookId,
-    }: SaveParams): Promise<SaveResult> {
+    }: SaveInput): Promise<SaveOutput> {
         const pgUserRepo = getRepository(PgUser)
-        let resultId: string
+        let outputId: string
         if (!id) {
             const pgUser = await pgUserRepo.save({
                 email,
                 name,
                 facebookId,
             })
-            resultId = pgUser.id?.toString()
+            outputId = pgUser.id?.toString()
         } else {
-            resultId = id
+            outputId = id
             await pgUserRepo.save({
-                id: Number(resultId),
+                id: Number(outputId),
                 name,
                 facebookId,
             })
         }
-        return { id: resultId }
+        return { id: outputId }
     }
 }
