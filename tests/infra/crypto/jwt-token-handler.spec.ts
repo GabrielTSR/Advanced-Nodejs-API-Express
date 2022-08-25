@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
-import { JwtTokenGenerator } from '@/infra/crypto'
+import { JwtTokenHandler } from '@/infra/crypto'
 
 jest.mock('jsonwebtoken')
 
 describe('JwtTokenGenerator', () => {
-    let sut: JwtTokenGenerator
+    let sut: JwtTokenHandler
     let fakeJwt: jest.Mocked<typeof jwt>
 
     beforeAll(() => {
@@ -13,17 +13,24 @@ describe('JwtTokenGenerator', () => {
     })
 
     beforeEach(() => {
-        sut = new JwtTokenGenerator('any_secret')
+        sut = new JwtTokenHandler('any_secret')
     })
 
     it('should call sign with correct params', async () => {
         await sut.generateToken({ key: 'any_key', expirationInMs: 1000 })
 
-        expect(fakeJwt.sign).toHaveBeenCalledWith({ key: 'any_key' }, 'any_secret', { expiresIn: 1 })
+        expect(fakeJwt.sign).toHaveBeenCalledWith(
+            { key: 'any_key' },
+            'any_secret',
+            { expiresIn: 1 }
+        )
     })
 
     it('should return a token', async () => {
-        const token = await sut.generateToken({ key: 'any_key', expirationInMs: 1000 })
+        const token = await sut.generateToken({
+            key: 'any_key',
+            expirationInMs: 1000,
+        })
 
         expect(token).toBe('any_token')
     })
@@ -33,7 +40,10 @@ describe('JwtTokenGenerator', () => {
             throw new Error('token_error')
         })
 
-        const result = sut.generateToken({ key: 'any_key', expirationInMs: 1000 })
+        const result = sut.generateToken({
+            key: 'any_key',
+            expirationInMs: 1000,
+        })
 
         await expect(result).rejects.toThrow('token_error')
     })
